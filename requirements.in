@@ -1,7 +1,9 @@
--e git://github.com/mbertheau/python-emarsys@master#egg=python-emarsys
+-e git://github.com/mbertheau/python-emarsys@0.3#egg=python-emarsys
+
 # lowest supported django version
-Django<1.8
+Django~=1.8.14
 pytest
 pytest-django
 mock
 jsonfield
+six

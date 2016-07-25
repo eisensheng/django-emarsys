@@ -18,6 +18,6 @@ setup(name='django_emarsys',
                 'oscar_emarsys.dashboard.emarsys'],
       include_package_data=True,
       install_requires=[
-          'python-emarsys==0.2',
+          'python-emarsys==0.3',
           'jsonfield==1.0.3',
       ])

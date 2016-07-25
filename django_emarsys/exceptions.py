@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
+
+from six import text_type
 
 
 class DjangoEmarsysError(Exception):
@@ -10,9 +11,9 @@ class DjangoEmarsysError(Exception):
 class BadDataError(DjangoEmarsysError):
     def __init__(self, expected_args, actual_args):
         super(BadDataError, self).__init__(
-            "expected data args {}, got {}"
-            .format([unicode(x).encode() for x in expected_args],
-                    [unicode(x).encode() for x in actual_args]))
+            "expected data args [{}], got [{}]"
+            .format(', '.join("'{}'".format(text_type(x)) for x in expected_args),
+                    ', '.join("'{}'".format(text_type(x)) for x in actual_args)))
 
 
 class UnknownEventNameError(DjangoEmarsysError):

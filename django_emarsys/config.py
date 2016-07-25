@@ -6,6 +6,8 @@ import re
 from collections import Counter
 from itertools import chain
 
+from six import text_type, binary_type
+
 from django.apps import apps
 from django.conf import settings
 from django.core.checks import Critical, Error, Warning
@@ -121,7 +123,10 @@ def _validate_event(event, params):
     }
 
     """
-    if not isinstance(event, basestring) or not event:
+    if isinstance(event, binary_type):
+        event = event.decode('utf-8')
+
+    if not isinstance(event, text_type) or not event:
         return [Warning("invalid event name: '{event}'".format(event=event))]
 
     messages = []
@@ -167,7 +172,10 @@ def _validate_event_param(event, argument, param):
 
     name, model = param
 
-    if not isinstance(name, basestring) or not name:
+    if isinstance(event, binary_type):
+        name = name.decode('utf-8')
+
+    if not isinstance(name, text_type) or not name:
         messages.append(
             Error("invalid parameter name for event '{event}': '{name}'"
                   .format(name=name, event=event)))

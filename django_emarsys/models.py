@@ -6,6 +6,8 @@ import logging
 
 from jsonfield import JSONField
 
+from six import text_type
+
 from django.apps import apps
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -77,7 +79,7 @@ class EventInstance(models.Model):
 
     def handle_error(self, msg):
         log.error("error for event id={}: {}".format(self.id, msg))
-        self.result = unicode(msg)
+        self.result = text_type(msg)
         self.state = EventInstance.STATE_ERROR
         self.save()
 

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from itertools import islice as slice, imap as map, ifilter as filter, tee
+from itertools import tee
+
+from six.moves import map, filter
 
 import emarsys
 
