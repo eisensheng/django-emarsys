@@ -1,0 +1,5 @@
+-e git+git://github.com/mbertheau/python-emarsys@0.3#egg=python-emarsys
+
+Django>=1.8.14,<1.10
+jsonfield~=1.0.3
+six~=1.10.0
