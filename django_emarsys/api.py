@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from itertools import tee
+from itertools import islice, tee
 
 from six.moves import map, filter
 
@@ -157,7 +157,7 @@ def sync_contacts(contacts, create_missing=True, quiet=True):
         """
         it = iter(it)
         while True:
-            chunk = tuple(slice(it, n))
+            chunk = tuple(islice(it, n))
             if not chunk:
                 return
             yield chunk
