@@ -2,12 +2,15 @@
 
 import logging
 from itertools import islice, tee
+from operator import itemgetter
 
 from six.moves import map, filter
 
 import emarsys
 
 from django.conf import settings
+
+from . import whitelist
 
 log = logging.getLogger(__name__)
 
@@ -83,10 +86,7 @@ def _create_contacts(contacts):
 def update_contacts(contacts):
     contacts = map(_transform_contact_data, contacts)
 
-    # Filter contact data using whitelist
-    if settings.EMARSYS_RECIPIENT_WHITELIST is not None:
-        contacts = filter(lambda contact: contact[3]  # 3=email
-                          in settings.EMARSYS_RECIPIENT_WHITELIST, contacts)
+    contacts = whitelist.filter_contacts(contacts, itemgetter(3))
 
     contacts = list(contacts)
 
@@ -175,10 +175,7 @@ def sync_contacts(contacts, create_missing=True, quiet=True):
 
     contacts = map(_transform_contact_data, contacts)
 
-    # Filter contact data using whitelist
-    if settings.EMARSYS_RECIPIENT_WHITELIST is not None:
-        contacts = filter(lambda contact: contact[3]  # 3=email
-                          in settings.EMARSYS_RECIPIENT_WHITELIST, contacts)
+    contacts = whitelist.filter_contacts(contacts, itemgetter(3))
 
     update_contacts, create_contacts = tee(contacts, 2)
 

@@ -9,11 +9,12 @@ from django.utils.html import conditional_escape
 
 from emarsys import EmarsysError
 
-from . import api
+from . import api, whitelist
 from .context_provider_registry import get_context_provider
 from .exceptions import (BadDataError, DjangoEmarsysError,
                          UnknownEventNameError)
 from .models import Event, EventInstance, EventParam
+
 
 log = logging.getLogger(__name__)
 
@@ -221,11 +222,10 @@ def _create_event_instance(event_name, recipient_email, emarsys_event_id,
         event.handle_error("Emarsys-ID unknown")
         return event
 
-    if getattr(settings, 'EMARSYS_RECIPIENT_WHITELIST', None) is not None:
-        if recipient_email not in settings.EMARSYS_RECIPIENT_WHITELIST:
-            event.handle_error("User not on whitelist: {}"
-                               .format(recipient_email))
-            return event
+    if recipient_email not in whitelist.items:
+        event.handle_error("User not on whitelist: {}"
+                           .format(recipient_email))
+        return event
 
     try:
         api.trigger_event(emarsys_event_id, recipient_email, context)
