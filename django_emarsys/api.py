@@ -31,7 +31,7 @@ BATCH_SIZE = 1000
 
 
 def get_events():
-    response = Client().call('/api/v2/event', 'GET')
+    response = Client().call('/api/v2/event/', 'GET')
     return {event['name']: int(event['id']) for event in response}
 
 
